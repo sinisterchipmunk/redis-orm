@@ -67,7 +67,7 @@ There are 3 core relationships defined by `redis-orm`: `belongs_to`, `has_one` a
       belongs_to :user
     end
     
-As shwon above, you should usually follow your `has_one` and `has_many` directives with a `relation` option, which matches the corresponding `belongs_to` relation in the other models. Think of it as the `foreign_key` option in ActiveRecord. This option is not strictly required and `redis-orm` will work fine without it, but you may have problems looking up the reverse relations (e.g. the `belongs_to` part) without it.
+As shown above, you should usually follow your `has_one` and `has_many` directives with a `relation` option, which matches the corresponding `belongs_to` relation in the other models. Think of it as the `foreign_key` option in ActiveRecord. This option is not strictly required and `redis-orm` will work fine without it, but you may have problems looking up the reverse relations (e.g. the `belongs_to` part) without it.
 
 Alternatively, you can specify a `relation` option for the `belongs_to` directive, instead:
 
