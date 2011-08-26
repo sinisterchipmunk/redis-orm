@@ -6,6 +6,8 @@ Easy-to-use object relational mapping for Redis.
 
 The gem is intended to be similar to ActiveRecord; however, it's not identical. Most notably, a lot of options that ActiveRecord gives you are currently missing from `redis-orm`. This is mostly because I'm just one guy, and I have other projects I'd like to make some headway on. As time goes on, expect `redis-orm` to become more and more ActiveRecord-like. The end goal is to produce a Redis library that is a drop-in replacement for ActiveRecord in a Rails 3 project (but that is also usable outside of Rails).
 
+And by the way, I'm totally accepting pull requests. Hint, hint.
+
 ## Requiring
 
 Add it to your Gemfile if you're using one. If necessary, require the redis-orm libraries like so:
