@@ -178,6 +178,9 @@ You can use these callbacks to perform commands directly upon the Redis database
 
 ## Configuration
 
+
+### connection
+
 You can set the host and port for Redis:
 
     Redis.host = 'localhost'
@@ -187,3 +190,13 @@ If you already have an active connection, however, these changes will not take e
 
     Redis.connection = Redis.new(:host => 'localhost', :port => 3000)
 
+
+### serializer
+
+By default, Redis serializes the attributes using Marshal. If you would prefer to store data in some other format, simply replace Redis::ORM.serializer with your choice. Anything that responds to #dump and #load will work (JSON, YAML, etc):
+
+    Redis::ORM.serializer = YAML
+
+Obviously, you can use your own custom serializer just as easily. Just pass in an object that returns a string for `#dump(object)` and an object for `#load(string)` and you're good to go.
+
+It's worth noting that there can only be one serializer for all models. It's also worth noting that it's a Bad Idea to switch serializers once you've got a database full of data. If you need to switch, for instance, from JSON to YAML serialization, you'll need to come up with a migration scheme yourself.
