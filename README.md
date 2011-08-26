@@ -28,7 +28,7 @@ Inherit from `Redis::ORM` as if you were inheriting from `ActiveRecord::Base`:
       # more code here!
     end
 
-At this point your Accounts can be created, saved, and so forth. It might be helpful to define attributes on the model, however, or else the model will be quite useless indeed!
+At this point your Users can be created, saved, and so forth. It might be helpful to define attributes on the model, however, or else the model will be quite useless indeed!
 
 ### attributes
 
