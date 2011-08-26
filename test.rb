@@ -15,8 +15,8 @@ a2.save!
 a1.others << a2 << a3
 a1.save!
 
-p a1.key
-p A.find(a1.key), A.find(a1.key).others
+p a1.id
+p A.find(a1.id), A.find(a1.id).others
 
 puts A.all.collect { |a| a.inspect }
 
