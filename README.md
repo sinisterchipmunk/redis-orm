@@ -55,15 +55,11 @@ Like `ActiveRecord`, `redis-orm` defines `created_at` and `updated_at` attribute
 There are 3 core relationships defined by `redis-orm`: `belongs_to`, `has_one` and `has_many`. They function essentially similar to relations of the same name in ActiveRecord, but it's important to keep in mind that they are specifically designed for Redis, and they have some minor differences.
 
     class User < Redis::ORM
-      attribute :login
-      attribute :password
-      has_many :posts
-      has_one :profile
+      has_many :posts, :relation => :user
+      has_one :profile, :relation => :user
     end
     
     class Post < Redis::ORM
-      attribute :subject, "(no subject)"
-      attribute :body
       belongs_to :user
     end
 
@@ -71,6 +67,26 @@ There are 3 core relationships defined by `redis-orm`: `belongs_to`, `has_one` a
       belongs_to :user
     end
     
+As shwon above, you should usually follow your `has_one` and `has_many` directives with a `relation` option, which matches the corresponding `belongs_to` relation in the other models. Think of it as the `foreign_key` option in ActiveRecord. This option is not strictly required and `redis-orm` will work fine without it, but you may have problems looking up the reverse relations (e.g. the `belongs_to` part) without it.
+
+Alternatively, you can specify a `relation` option for the `belongs_to` directive, instead:
+
+    class User < Redis::ORM
+      has_many :posts
+      has_one :profile
+    end
+
+    class Post < Redis::ORM
+      belongs_to :user, :relation => :posts
+    end
+
+    class Profile < Redis::ORM
+      belongs_to :user, :relation => :profile
+    end
+
+TODO: A future version of this gem will infer the `relation` option from the class name if it omitted.
+
+
 #### inference
 
 Unlike `ActiveRecord`, `redis-orm` does _not_ infer class names from the relation name. You can give any value you like to the relations. During look-up, class names are retrieved from the object's ID, which (as mentioned) is already maintained for you. So in most cases, you should not have to care about the object's class at all. The only caveat is, all related objects _must_ inherit from `Redis::ORM` so that they can be looked up and deserialized properly.
