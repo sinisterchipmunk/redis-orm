@@ -13,7 +13,7 @@ module Redis::Actions::Destroying
       # run_callbacks(:before_destroy)
       run_callbacks(:destroy) do
         transaction do
-          connection.del key
+          connection.del id
           within_destroy_blocks.each do |method_name_or_block|
             if method_name_or_block.kind_of?(String) || method_name_or_block.kind_of?(Symbol)
               send method_name_or_block

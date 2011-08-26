@@ -11,20 +11,20 @@ module Redis::Relations::HasOne
     if has_one_references.key?(relation_name)
       has_one_references[relation_name]
     else
-      result = self.class.find(connection.hget(has_one_relation_key(relation_name), key))
+      result = self.class.find(connection.hget(has_one_relation_id(relation_name), id))
       has_one_references[relation_name] = result
     end
   end
   
-  def has_one_relation_key(name)
+  def has_one_relation_id(name)
     File.join("references", has_one_relations[name][:relation].to_s)
   end
   
   def save_has_one_references
     has_one_references.each do |relation_name, reference|
       if reference
-        connection.hset(has_one_relation_key(relation_name), key, reference.key)
-        connection.hset(has_one_relation_key(relation_name), reference.key, key)
+        connection.hset(has_one_relation_id(relation_name), id, reference.id)
+        connection.hset(has_one_relation_id(relation_name), reference.id, id)
       end
     end
   end

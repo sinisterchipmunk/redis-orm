@@ -11,21 +11,21 @@ module Redis::Relations::BelongsTo
     if belongs_to_references.key?(name)
       belongs_to_references[name]
     else
-      result = self.class.find(connection.hget(belongs_to_relation_key(name), key))
+      result = self.class.find(connection.hget(belongs_to_relation_id(name), id))
       belongs_to_references[name] = result
     end
   end
   
-  def belongs_to_relation_key(name)
+  def belongs_to_relation_id(name)
     File.join("references", belongs_to_relations[name][:relation].to_s)
   end
   
   def save_belongs_to_references
     belongs_to_references.each do |relation_name, reference|
       if reference
-        reference = reference.key
+        reference = reference.id
       end
-      connection.hset(belongs_to_relation_key(relation_name), key, reference)
+      connection.hset(belongs_to_relation_id(relation_name), id, reference)
     end
   end
   

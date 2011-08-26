@@ -7,7 +7,7 @@ module Redis::Relations::HasMany
     if has_many_references.key?(relation_name)
       has_many_references[relation_name]
     else
-      result = connection.hget(has_many_relation_key(relation_name), key)
+      result = connection.hget(has_many_relation_id(relation_name), id)
       if result
         result = serializer.load(result)
         if result.respond_to?(:collect)
@@ -24,15 +24,15 @@ module Redis::Relations::HasMany
   
   def save_has_many_references
     has_many_references.each do |relation_name, array|
-      array = array.collect { |a| a.key }
-      connection.hset(has_many_relation_key(relation_name), key, serializer.dump(array))
-      array.each do |akey|
-        connection.hset(has_many_relation_key(relation_name), akey, key)
+      array = array.collect { |a| a.id }
+      connection.hset(has_many_relation_id(relation_name), id, serializer.dump(array))
+      array.each do |aid|
+        connection.hset(has_many_relation_id(relation_name), aid, id)
       end
     end
   end
   
-  def has_many_relation_key(name)
+  def has_many_relation_id(name)
     File.join("references", has_many_relations[name][:relation].to_s)
   end
   

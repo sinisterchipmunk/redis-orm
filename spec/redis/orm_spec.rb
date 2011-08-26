@@ -39,16 +39,16 @@ describe Redis::ORM do
           subject.should_not be_changed
         end
       
-        it "should have a key" do
-          subject.key.should_not be_nil
+        it "should have a id" do
+          subject.id.should_not be_nil
         end
       
         it "should be find-able" do
-          orm_class.find(subject.key).should == subject
+          orm_class.find(subject.id).should == subject
         end
       
         it "should find separate instances" do
-          orm_class.find(subject.key).should_not be(subject)
+          orm_class.find(subject.id).should_not be(subject)
         end
       end
     end

@@ -17,9 +17,9 @@ describe Redis::Actions::Finding do
     end
   end
   
-  context "with key not matching known constants" do
+  context "with id not matching known constants" do
     it "should find record with its own class" do
-      orm_class.create!(:key => '1234')
+      orm_class.create!(:id => '1234')
       orm_class.find('1234').should be_kind_of(orm_class)
     end
   end

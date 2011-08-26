@@ -23,19 +23,19 @@ class Redis::ORM
   include Redis::Relations
   include Redis::Validations
   
-  attribute :key
-  validates_uniqueness_of :key
+  attribute :id
+  validates_uniqueness_of :id
   
   class << self
     delegate :connection, :to => :Redis
   end
 
   def to_key
-    persisted? ? key : nil
+    persisted? ? id : nil
   end
   
   def to_param
-    persisted? ? File.join(model_name, key) : nil
+    persisted? ? File.join(model_name, id) : nil
   end
   
   def persisted?
@@ -54,6 +54,6 @@ class Redis::ORM
   end
   
   def ==(other)
-    other && key == other.key
+    other && id == other.id
   end
 end

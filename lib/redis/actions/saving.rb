@@ -10,7 +10,7 @@ module Redis::Actions::Saving
   
   def save
     if valid?
-      define_key if key.nil?
+      define_id if id.nil?
       run_callbacks(:save) do
         transaction do
           within_save_blocks.each do |block_or_method|
@@ -20,7 +20,7 @@ module Redis::Actions::Saving
               block_or_method.call self
             end
           end
-          connection.set(key, serializer.dump(attributes))
+          connection.set(id, serializer.dump(attributes))
         end
       end
       set_unchanged!
@@ -34,8 +34,8 @@ module Redis::Actions::Saving
     raise "Record was not saved: #{errors.full_messages}" unless save
   end
   
-  def define_key
-    self.key = File.join(model_name, connection.incr("__uniq__").to_s)
+  def define_id
+    self.id = File.join(model_name, connection.incr("__uniq__").to_s)
   end
 
   module ClassMethods

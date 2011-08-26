@@ -14,9 +14,9 @@ describe Redis::Relations::HasMany do
     end
     subject.save!
     
-    orm_class.find(subject.key).others.should have(10).items
+    orm_class.find(subject.id).others.should have(10).items
     for i in 0...10
-      orm_class.find(subject.key).others[i].should be_kind_of(orm_class)
+      orm_class.find(subject.id).others[i].should be_kind_of(orm_class)
     end
   end
   

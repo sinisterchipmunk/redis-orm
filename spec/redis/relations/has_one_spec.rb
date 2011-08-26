@@ -11,7 +11,7 @@ describe Redis::Relations::HasOne do
     subject.other = other
     subject.save!
     
-    orm_class.find(subject.key).other.should be_kind_of(orm_class)
+    orm_class.find(subject.id).other.should be_kind_of(orm_class)
   end
 
   it "mass assignment" do

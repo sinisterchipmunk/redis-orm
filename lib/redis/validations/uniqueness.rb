@@ -1,5 +1,5 @@
 module Redis::Validations::Uniqueness
-  def uniqueness_key(attribute_name)
+  def uniqueness_id(attribute_name)
     File.join(model_name, attribute_name.to_s.pluralize)
   end
 
@@ -16,8 +16,8 @@ module Redis::Validations::Uniqueness
       
       validate do |record|
         record.unique_fields.each do |name|
-          if key_in_use = connection.hget(record.uniqueness_key(name), record.send(name))
-            if key_in_use != record.key
+          if id_in_use = connection.hget(record.uniqueness_id(name), record.send(name))
+            if id_in_use != record.id
               record.errors.add(name, "must be unique")
             end
           end
@@ -26,14 +26,14 @@ module Redis::Validations::Uniqueness
       
       within_save_block do |record|
         record.unique_fields.each do |name|
-          connection.hdel(record.uniqueness_key(name), record.previous_attributes[name])
-          connection.hset(record.uniqueness_key(name), record.send(name), record.key)
+          connection.hdel(record.uniqueness_id(name), record.previous_attributes[name])
+          connection.hset(record.uniqueness_id(name), record.send(name), record.id)
         end
       end
       
       within_destroy_block do |record|
         record.unique_fields.each do |name|
-          connection.hdel(record.uniqueness_key(name), record.send(name))
+          connection.hdel(record.uniqueness_id(name), record.send(name))
         end
       end
     end
