@@ -35,7 +35,9 @@ module Redis::Actions::Saving
   end
   
   def define_id
-    self.id = File.join(model_name, connection.incr("__uniq__").to_s)
+    # model_name.to_s is required because model_name is actually an ActiveModel::Name
+    # and that can't be serialized by Rubinius. (Worked fine with all other rubies, though...)
+    self.id = File.join(model_name.to_s, connection.incr("__uniq__").to_s)
   end
 
   module ClassMethods
