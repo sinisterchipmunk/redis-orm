@@ -13,6 +13,10 @@ describe Redis::Actions::Finding do
     it "should find all of them" do
       all = orm_class.all
       all.length.should == 10
+      
+      # we must sort due to hashes being unordered in Ruby 1.8
+      all = all.sort { |a, b| a.random <=> b.random }
+      
       10.times { |i| all[i].random.should == i }
     end
   end
